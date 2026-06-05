@@ -1,0 +1,17 @@
+# vial-qmk-builder
+## up
+# docker compose up -d
+## init setup
+# docker compose exec qmk make git-submodule
+## make build
+# docker compose exec qmk qmk compile -kb hitokobu/o51go -km default
+## QMK ファームウェア書き込み
+# qmk-burn ./hitokobu_o51go_default.hex
+services:
+  qmk:
+    image: qmkfm/qmk_cli:latest
+    container_name: vial-qmk-builder
+    volumes:
+      - .:/qmk_firmware
+    working_dir: /qmk_firmware
+    command: tail -f /dev/null
