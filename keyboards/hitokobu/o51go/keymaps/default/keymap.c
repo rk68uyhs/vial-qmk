@@ -261,6 +261,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
             break;
+
+        case LCTL_T(KC_SCLN):
+            if (get_highest_layer(layer_state) == 2) {
+                if (record->tap.count > 0) {
+                    if (record->event.pressed) {
+                        // Shift + Semicolon
+                        tap_code16(S(KC_SCLN));
+                    }
+                    return false;
+                }
+            }
+            break;
     }
 
     return true;
@@ -276,38 +288,38 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 // キーマップの定義
 // ====================================================================
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    // Base
+    // base
     [0] = LAYOUT(
         QK_GESC, KC_Q, KC_L, KC_U, KC_COMM, KC_DOT, KC_VOLU, KC_F, KC_W, KC_R, KC_Y, KC_P, KC_GRV,
-        LGUI_T(KC_TAB), KC_E, KC_I, KC_A, KC_O, KC_MINS, KC_MUTE, KC_K, KC_T, KC_N, KC_S, KC_H, RSFT_T(KC_SCLN),
-        LALT_T(KC_BSLS), LCTL_T(KC_SCLN), KC_Z, KC_X, KC_C, KC_V, KC_VOLD, KC_G, KC_D, KC_M, KC_J, KC_B, RALT_T(KC_SLSH),
-        MO(4), KC_LCTL, KC_LALT, LGUI_T(KC_LNG2), LT(1, KC_BSPC), LSFT_T(KC_SPC), KC_NO, LT(2, KC_ENT), RGUI_T(KC_LNG1), KC_LCTL, KC_LEFT, KC_RGHT
+        LGUI_T(KC_TAB), KC_E, KC_I, KC_A, KC_O, KC_MINS, KC_MUTE, KC_K, KC_T, KC_N, KC_S, KC_H, KC_B,
+        LALT_T(KC_BSLS), LCTL_T(KC_SCLN), KC_Z, KC_X, KC_C, KC_V, KC_VOLD, KC_G, KC_D, KC_M, KC_J, KC_UP, RALT_T(KC_SLSH),
+        MO(4), KC_LCTL, KC_LALT, LGUI_T(KC_LNG2), LT(1, KC_BSPC), LSFT_T(KC_SPC), KC_TAB, LT(2, KC_ENT), RGUI_T(KC_LNG1), KC_LEFT, KC_DOWN, KC_RGHT
     ),
     // lower
     [1] = LAYOUT(
         KC_TRNS, LSFT(KC_SCLN), KC_SLSH, KC_MINS, KC_TRNS, KC_TRNS, LGUI(KC_EQL), KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F11,
         LGUI_T(KC_CAPS), KC_1, KC_2, KC_3, KC_4, KC_5, LGUI(KC_P0), KC_6, KC_7, KC_8, KC_9, KC_0, KC_F12,
         KC_TRNS, LCTL_T(KC_6), KC_7, KC_8, KC_9, KC_0, LGUI(KC_MINS), KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_NO, KC_DOWN, KC_UP
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_NO, KC_NO, KC_NO
     ),
     // raise
     [2] = LAYOUT(
         LSFT(KC_GRV), LSFT(KC_6), LSFT(KC_5), LSFT(KC_4), LSFT(KC_COMM), LSFT(KC_DOT), KC_BRIU, LSFT(KC_LBRC), KC_LBRC, KC_UP, KC_RBRC, LSFT(KC_RBRC), LSFT(KC_GRV),
-        KC_TRNS, LSFT(KC_1), LSFT(KC_2), LSFT(KC_3), LSFT(KC_EQL), LSFT(KC_MINS), SGUI(KC_5), LSFT(KC_COMM), KC_LEFT, KC_DOWN, KC_RGHT, LSFT(KC_DOT), RSFT_T(KC_EQL),
+        KC_TRNS, LSFT(KC_1), LSFT(KC_2), LSFT(KC_3), LSFT(KC_EQL), LSFT(KC_MINS), SGUI(KC_5), LSFT(KC_SCLN), KC_LEFT, KC_DOWN, KC_RGHT, KC_EQL, KC_SCLN,
         KC_TRNS, KC_TRNS, LSFT(KC_BSLS), LSFT(KC_8), LSFT(KC_7), LSFT(KC_SLSH), KC_BRID, LSFT(KC_COMM), LSFT(KC_9), KC_QUOT, LSFT(KC_0), LSFT(KC_DOT), LSFT(KC_SLSH),
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_NO, KC_NO, KC_NO
     ),
     // adjust
     [3] = LAYOUT(
         KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,  KC_NO,  KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
-        KC_NO, KC_NO, KC_NO, KC_P , KC_NO, KC_NO,  KC_NO,  KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+        KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,  KC_NO,  KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
         KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,  KC_NO,  KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
         KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,    KC_NO,    KC_NO,    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
     ),
-    // layer4
+    // assist
     [4] = LAYOUT(
         LCTL(LGUI(KC_Q)), KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_MNXT, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
-        KC_NO,            KC_NO, KC_NO, KC_P , KC_NO, KC_NO, KC_MPLY, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+        KC_NO,            KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_MPLY, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
         KC_NO,            KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_MPRV, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
         KC_NO,            KC_NO, KC_NO, KC_NO, KC_NO,    KC_NO,    KC_NO,    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
     )
