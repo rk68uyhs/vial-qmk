@@ -238,7 +238,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
 
-        case LT(2, KC_ENT):
+        case LT(2, KC_TAB):
             if (get_highest_layer(layer_state) == 1) {
                 if (record->tap.count > 0) {
                     if (record->event.pressed) {
