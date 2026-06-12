@@ -238,24 +238,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
 
-        case LT(2, KC_ENT):
+        case LT(2, KC_TAB):
             if (get_highest_layer(layer_state) == 1) {
                 if (record->tap.count > 0) {
                     if (record->event.pressed) {
                         // LALT + Space
                         tap_code16(LALT(KC_SPC));
-                    }
-                    return false;
-                }
-            }
-            break;
-
-        case LSFT_T(KC_SPC):
-            if (get_highest_layer(layer_state) == 2) {
-                if (record->tap.count > 0) {
-                    if (record->event.pressed) {
-                        // Shift + Space
-                        tap_code16(S(KC_SPC));
                     }
                     return false;
                 }
@@ -293,7 +281,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         QK_GESC, KC_Q, KC_L, KC_U, KC_COMM, KC_DOT, KC_VOLU, KC_F, KC_W, KC_R, KC_Y, KC_P, KC_GRV,
         LGUI_T(KC_TAB), KC_E, KC_I, KC_A, KC_O, KC_MINS, KC_MUTE, KC_K, KC_T, KC_N, KC_S, KC_H, KC_B,
         LALT_T(KC_BSLS), LCTL_T(KC_SCLN), KC_Z, KC_X, KC_C, KC_V, KC_VOLD, KC_G, KC_D, KC_M, KC_J, KC_UP, RALT_T(KC_SLSH),
-        MO(4), KC_LCTL, KC_LALT, LGUI_T(KC_LNG2), LT(1, KC_BSPC), LSFT_T(KC_SPC), RSFT_T(KC_SPC), LT(2, KC_ENT), RGUI_T(KC_LNG1), KC_LEFT, KC_DOWN, KC_RGHT
+        MO(4), KC_LCTL, KC_LALT, LGUI_T(KC_LNG2), LT(1, KC_BSPC), LSFT_T(KC_SPC), RSFT_T(KC_ENT), LT(2, KC_TAB), RGUI_T(KC_LNG1), KC_LEFT, KC_DOWN, KC_RGHT
     ),
     // lower
     [1] = LAYOUT(
