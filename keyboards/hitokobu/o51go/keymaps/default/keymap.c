@@ -27,6 +27,8 @@ enum custom_keycodes {
     // その他
     CMB_P_GRV,  // P + ` (Delete)
     CMB_U_COMM, // U + , (Enter)
+    CMB_RY,     // R + Y (Tab)
+    CMB_WR,     // W + R (Shift+Tab)
 
     // Maccy 呼び出し
     CMB_MACCY_L, // U + O (Maccy呼び出し)
@@ -37,45 +39,54 @@ enum custom_keycodes {
 };
 
 // 同時押しするキーの組み合わせ（Chord）
-// -- 3キーコンボ --
-const uint16_t PROGMEM combo_quit[] = {KC_L, KC_U, KC_COMM, COMBO_END};
-const uint16_t PROGMEM combo_all[]  = {KC_I, KC_A, KC_O, COMBO_END};
-const uint16_t PROGMEM combo_tns[]  = {KC_T, KC_N, KC_S, COMBO_END};
-// -- 2キーコンボ --
 const uint16_t PROGMEM combo_copy[]       = {KC_I, KC_A, COMBO_END};
 const uint16_t PROGMEM combo_paste[]      = {KC_A, KC_O, COMBO_END};
 const uint16_t PROGMEM combo_cut[]        = {KC_I, KC_O, COMBO_END};
 const uint16_t PROGMEM combo_undo[]       = {KC_Z, KC_X, COMBO_END};
+const uint16_t PROGMEM combo_all[]        = {KC_I, KC_A, KC_O, COMBO_END};
+
 const uint16_t PROGMEM combo_close[]      = {KC_L, KC_U, COMBO_END};
+const uint16_t PROGMEM combo_quit[]       = {KC_L, KC_U, KC_COMM, COMBO_END};
+
 const uint16_t PROGMEM combo_tn[]         = {KC_T, KC_N, COMBO_END};
 const uint16_t PROGMEM combo_ns[]         = {KC_N, KC_S, COMBO_END};
+const uint16_t PROGMEM combo_tns[]        = {KC_T, KC_N, KC_S, COMBO_END};
 const uint16_t PROGMEM combo_ts[]         = {KC_T, KC_S, COMBO_END};
+
 const uint16_t PROGMEM combo_p_grv[]      = {KC_P, KC_GRV, COMBO_END};
 const uint16_t PROGMEM combo_u_comm[]     = {KC_U, KC_COMM, COMBO_END};
+const uint16_t PROGMEM combo_ry[]         = {KC_R, KC_Y, COMBO_END};
+const uint16_t PROGMEM combo_wr[]         = {KC_W, KC_R, COMBO_END};
+
 const uint16_t PROGMEM combo_maccy_l[]    = {KC_U, KC_O, COMBO_END};
 const uint16_t PROGMEM combo_maccy_r[]    = {KC_R, KC_T, COMBO_END};
+
 const uint16_t PROGMEM combo_hard_reset[] = {P_TOP_RIGHT, P_BTM_RIGHT, COMBO_END};
 
 // コンボの登録
 combo_t key_combos[] = {
-    // --- 3キーのコンボ ---
-    COMBO(combo_all, CMB_ALL),
-    COMBO(combo_quit, CMB_QUIT),
-    COMBO(combo_tns, CMB_TNS),
-
-    // --- 2キーのコンボ ---
     COMBO(combo_copy, CMB_COPY),
     COMBO(combo_paste, CMB_PASTE),
     COMBO(combo_cut, CMB_CUT),
     COMBO(combo_undo, CMB_UNDO),
+    COMBO(combo_all, CMB_ALL),
+
     COMBO(combo_close, CMB_CLOSE),
+    COMBO(combo_quit, CMB_QUIT),
+
     COMBO(combo_tn, CMB_TN),
     COMBO(combo_ns, CMB_NS),
+    COMBO(combo_tns, CMB_TNS),
     COMBO(combo_ts, CMB_TS),
+
     COMBO(combo_p_grv, CMB_P_GRV),
     COMBO(combo_u_comm, CMB_U_COMM),
+    COMBO(combo_ry, CMB_RY),
+    COMBO(combo_wr, CMB_WR),
+
     COMBO(combo_maccy_l, CMB_MACCY_L),
     COMBO(combo_maccy_r, CMB_MACCY_R),
+
     COMBO(combo_hard_reset, CMB_HARD_RESET),
 };
 
@@ -208,6 +219,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 
+        case CMB_RY:
+            if (record->event.pressed) {
+                tap_code16(KC_TAB);
+            }
+            return false;
+
+        case CMB_WR:
+            if (record->event.pressed) {
+                tap_code16(S(KC_TAB));
+            }
+            return false;
+
         case CMB_MACCY_L:
             if (record->event.pressed) {
                 tap_code16(HYPR(KC_V));
@@ -238,12 +261,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             break;
 
-        case LT(2, KC_TAB):
+        case LT(2, KC_ENT):
             if (get_highest_layer(layer_state) == 1) {
                 if (record->tap.count > 0) {
                     if (record->event.pressed) {
                         // LALT + Space
                         tap_code16(LALT(KC_SPC));
+                    }
+                    return false;
+                }
+            }
+            break;
+
+        case LSFT_T(KC_SPC):
+            if (get_highest_layer(layer_state) == 2) {
+                if (record->tap.count > 0) {
+                    if (record->event.pressed) {
+                        // Shift + Space
+                        tap_code16(S(KC_SPC));
                     }
                     return false;
                 }
@@ -281,7 +316,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         QK_GESC, KC_Q, KC_L, KC_U, KC_COMM, KC_DOT, KC_VOLU, KC_F, KC_W, KC_R, KC_Y, KC_P, KC_GRV,
         LGUI_T(KC_TAB), KC_E, KC_I, KC_A, KC_O, KC_MINS, KC_MUTE, KC_K, KC_T, KC_N, KC_S, KC_H, KC_B,
         LALT_T(KC_BSLS), LCTL_T(KC_SCLN), KC_Z, KC_X, KC_C, KC_V, KC_VOLD, KC_G, KC_D, KC_M, KC_J, KC_UP, RALT_T(KC_SLSH),
-        MO(4), KC_LCTL, KC_LALT, LGUI_T(KC_LNG2), LT(1, KC_BSPC), LSFT_T(KC_SPC), RSFT_T(KC_ENT), LT(2, KC_TAB), RGUI_T(KC_LNG1), KC_LEFT, KC_DOWN, KC_RGHT
+        MO(4), KC_LCTL, KC_LALT, LGUI_T(KC_LNG2), LT(1, KC_BSPC), LSFT_T(KC_SPC), RSFT_T(KC_SPC), LT(2, KC_ENT), RGUI_T(KC_LNG1), KC_LEFT, KC_DOWN, KC_RGHT
     ),
     // lower
     [1] = LAYOUT(
