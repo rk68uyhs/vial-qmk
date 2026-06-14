@@ -12,6 +12,7 @@ enum custom_keycodes {
     CMB_PASTE,             // A + O (ペースト)
     CMB_CUT,               // I + O (切り取り)
     CMB_UNDO,              // Z + X (元に戻す)
+    CMB_REDO,              // X + C (やり直し)
     CMB_ALL,               // I + A + O (すべて選択)
 
     // ウインドウ/アプリ管理
@@ -43,6 +44,7 @@ const uint16_t PROGMEM combo_copy[]       = {KC_I, KC_A, COMBO_END};
 const uint16_t PROGMEM combo_paste[]      = {KC_A, KC_O, COMBO_END};
 const uint16_t PROGMEM combo_cut[]        = {KC_I, KC_O, COMBO_END};
 const uint16_t PROGMEM combo_undo[]       = {KC_Z, KC_X, COMBO_END};
+const uint16_t PROGMEM combo_redo[]       = {KC_X, KC_C, COMBO_END};
 const uint16_t PROGMEM combo_all[]        = {KC_I, KC_A, KC_O, COMBO_END};
 
 const uint16_t PROGMEM combo_close[]      = {KC_L, KC_U, COMBO_END};
@@ -69,6 +71,7 @@ combo_t key_combos[] = {
     COMBO(combo_paste, CMB_PASTE),
     COMBO(combo_cut, CMB_CUT),
     COMBO(combo_undo, CMB_UNDO),
+    COMBO(combo_redo, CMB_REDO),
     COMBO(combo_all, CMB_ALL),
 
     COMBO(combo_close, CMB_CLOSE),
@@ -133,6 +136,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     tap_code16(LCTL(KC_Z));
                 } else {
                     tap_code16(LGUI(KC_Z));
+                }
+            }
+            return false;
+
+        case CMB_REDO:
+            if (record->event.pressed) {
+                if (is_windows) {
+                    tap_code16(S(LCTL(KC_Z)));
+                } else {
+                    tap_code16(S(LGUI(KC_Z)));
                 }
             }
             return false;
