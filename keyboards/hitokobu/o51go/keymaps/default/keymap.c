@@ -287,14 +287,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
 
         case LSFT_T(KC_SPC):
-            if (get_highest_layer(layer_state) == 2) {
-                if (record->tap.count > 0) {
-                    if (record->event.pressed) {
-                        // Shift + Space
-                        tap_code16(S(KC_SPC));
-                    }
-                    return false;
-                }
+            // Layer 0: 左 Alt キーが押されている場合、Alt を一時解除して Shift + Space を送信
+            if (get_highest_layer(layer_state) == 0 && record->event.pressed && (get_mods() & MOD_BIT(KC_LALT))) {
+                uint8_t mods_backup = get_mods();
+                unregister_mods(MOD_BIT(KC_LALT));
+                tap_code16(S(KC_SPC));
+                set_mods(mods_backup);
+                return false;
+            }
+            // Layer 2 (Raise): タップで Shift + Space を送信
+            if (get_highest_layer(layer_state) == 2 && record->tap.count > 0 && record->event.pressed) {
+                tap_code16(S(KC_SPC));
+                return false;
             }
             break;
 
