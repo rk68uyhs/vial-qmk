@@ -263,26 +263,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
 
         case LT(1, KC_BSPC):
-            if (get_highest_layer(layer_state) == 2) {
-                if (record->tap.count > 0) {
-                    if (record->event.pressed) {
-                        // LALT + Backspace
-                        tap_code16(LALT(KC_BSPC));
-                    }
-                    return false;
+            if (get_highest_layer(layer_state) == 2 && record->tap.count > 0) {
+                if (record->event.pressed) {
+                    // LALT + Backspace
+                    tap_code16(LALT(KC_BSPC));
                 }
+                return false;
             }
             break;
 
         case LT(2, KC_ENT):
-            if (get_highest_layer(layer_state) == 1) {
-                if (record->tap.count > 0) {
-                    if (record->event.pressed) {
-                        // LALT + Space
-                        tap_code16(LALT(KC_SPC));
-                    }
-                    return false;
+            if (get_highest_layer(layer_state) == 1 && record->tap.count > 0) {
+                if (record->event.pressed) {
+                    // LALT + Space
+                    tap_code16(LALT(KC_SPC));
                 }
+                return false;
             }
             break;
 
@@ -296,21 +292,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 return false;
             }
             // Layer 2 (Raise): タップで Shift + Space を送信
-            if (get_highest_layer(layer_state) == 2 && record->tap.count > 0 && record->event.pressed) {
-                tap_code16(S(KC_SPC));
+            if (get_highest_layer(layer_state) == 2 && record->tap.count > 0) {
+                if (record->event.pressed) {
+                    tap_code16(S(KC_SPC));
+                }
                 return false;
             }
             break;
 
         case LCTL_T(KC_SCLN):
-            if (get_highest_layer(layer_state) == 2) {
-                if (record->tap.count > 0) {
-                    if (record->event.pressed) {
-                        // Shift + Semicolon
-                        tap_code16(S(KC_SCLN));
-                    }
-                    return false;
+            if (get_highest_layer(layer_state) == 2 && record->tap.count > 0) {
+                if (record->event.pressed) {
+                    // Shift + Semicolon
+                    tap_code16(S(KC_SCLN));
                 }
+                return false;
             }
             break;
     }
