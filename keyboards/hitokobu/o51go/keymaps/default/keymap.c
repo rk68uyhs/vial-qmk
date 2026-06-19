@@ -95,9 +95,8 @@ combo_t key_combos[] = {
 
 // コンボ成立時の処理（process_record_user）
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    // 現在のレイヤーが 5, 6, 7, 8 のいずれか（Windows）なら true
-    // bool is_windows = layer_state_is(4) || layer_state_is(5) || layer_state_is(6) || layer_state_is(7);
-    bool is_windows = false; // Windows/Macのレイヤー分けはしていないため、常にMacとして扱う
+    // 現在のレイヤーが 5, 6, 7, 8, 9 のいずれか（Windows）なら true
+    bool is_windows = layer_state_is(5) || layer_state_is(6) || layer_state_is(7) || layer_state_is(8) || layer_state_is(9);
     int current_layer = get_highest_layer(layer_state);
 
     switch (keycode) {
@@ -271,37 +270,45 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
                 return false;
             }
+            if (current_layer == 7 && record->tap.count > 0) {
+                if (record->event.pressed) {
+                    // LCTRL + Backspace
+                    tap_code16(LCTL(KC_BSPC));
+                }
+                return false;
+            }
             break;
 
         case LT(2, KC_ENT):
             if (current_layer == 1 && record->tap.count > 0) {
+                // mac
                 if (record->event.pressed) {
-                    if (is_windows) {
-                        // windows : LGIIを送信
-                        tap_code16(KC_LGUI);
-                    } else {
-                        // mac : LALT + Space(spotlight)
-                        tap_code16(LALT(KC_SPC));
-                    }
+                    // mac : LALT + Space(spotlight)
+                    tap_code16(LALT(KC_SPC));
+                }
+                return false;
+            }
+            if (current_layer == 6 && record->tap.count > 0) {
+                // win
+                if (record->event.pressed) {
+                    // windows : LGIIを送信
+                    tap_code16(KC_LGUI);
                 }
                 return false;
             }
             break;
 
         case LSFT_T(KC_SPC):
-            if (!is_windows) {
-                // windows では Shift + Space を特別扱いしないため、Mac のみの処理とする
-                // Layer 0: 左 Alt キーが押されている場合、Alt を一時解除して Shift + Space を送信
-                if (current_layer == 0 && record->event.pressed && (get_mods() & MOD_BIT(KC_LALT))) {
-                    uint8_t mods_backup = get_mods();
-                    unregister_mods(MOD_BIT(KC_LALT));
-                    tap_code16(S(KC_SPC));
-                    set_mods(mods_backup);
-                    return false;
-                }
+            // 左 Alt キーが押されている場合、Alt を一時解除して Shift + Space を送信
+            if ((current_layer == 0 || current_layer == 5) && record->event.pressed && (get_mods() & MOD_BIT(KC_LALT))) {
+                uint8_t mods_backup = get_mods();
+                unregister_mods(MOD_BIT(KC_LALT));
+                tap_code16(S(KC_SPC));
+                set_mods(mods_backup);
+                return false;
             }
-            // Layer 2 (Raise): タップで Shift + Space を送信
-            if (current_layer == 2 && record->tap.count > 0) {
+            // Layer 2 (Raise) or Layer 7: タップで Shift + Space を送信
+            if ((current_layer == 2 || current_layer == 7) && record->tap.count > 0) {
                 if (record->event.pressed) {
                     tap_code16(S(KC_SPC));
                 }
@@ -310,7 +317,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
 
         case LCTL_T(KC_SCLN):
-            if (current_layer == 2 && record->tap.count > 0) {
+            if ((current_layer == 2 || current_layer == 7) && record->tap.count > 0) {
                 if (record->event.pressed) {
                     // Shift + Semicolon
                     tap_code16(S(KC_SCLN));
@@ -326,6 +333,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 layer_state_t layer_state_set_user(layer_state_t state) {
     // L1 + L2 -> L3
     state = update_tri_layer_state(state, 1, 2, 3);
+    // L5 + L6 -> L7
     state = update_tri_layer_state(state, 5, 6, 7);
     return state;
 }
