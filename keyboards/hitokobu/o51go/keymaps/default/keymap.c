@@ -32,7 +32,7 @@ enum custom_keycodes {
     CMB_WR,     // W + R (Shift+Tab)
 
     // Maccy 呼び出し
-    CMB_MACCY_L, // U + O (Maccy呼び出し)
+    // CMB_MACCY_L, // U + O (Maccy呼び出し)
     CMB_MACCY_R, // R + T (Maccy呼び出し)
 
     // ハードリセット
@@ -60,7 +60,7 @@ const uint16_t PROGMEM combo_u_comm[]     = {KC_U, KC_COMM, COMBO_END};
 const uint16_t PROGMEM combo_ry[]         = {KC_R, KC_Y, COMBO_END};
 const uint16_t PROGMEM combo_wr[]         = {KC_W, KC_R, COMBO_END};
 
-const uint16_t PROGMEM combo_maccy_l[]    = {KC_U, KC_O, COMBO_END};
+// const uint16_t PROGMEM combo_maccy_l[]    = {KC_U, KC_O, COMBO_END};
 const uint16_t PROGMEM combo_maccy_r[]    = {KC_R, KC_T, COMBO_END};
 
 const uint16_t PROGMEM combo_hard_reset[] = {P_TOP_RIGHT, P_BTM_RIGHT, COMBO_END};
@@ -87,7 +87,7 @@ combo_t key_combos[] = {
     COMBO(combo_ry, CMB_RY),
     COMBO(combo_wr, CMB_WR),
 
-    COMBO(combo_maccy_l, CMB_MACCY_L),
+    // COMBO(combo_maccy_l, CMB_MACCY_L),
     COMBO(combo_maccy_r, CMB_MACCY_R),
 
     COMBO(combo_hard_reset, CMB_HARD_RESET),
@@ -244,11 +244,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 
-        case CMB_MACCY_L:
-            if (record->event.pressed) {
-                tap_code16(HYPR(KC_V));
-            }
-            return false;
+        // case CMB_MACCY_L:
+        //     if (record->event.pressed) {
+        //         tap_code16(HYPR(KC_V));
+        //     }
+        //     return false;
 
         case CMB_MACCY_R:
             if (record->event.pressed) {
@@ -299,14 +299,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
 
         case LSFT_T(KC_SPC):
-            // 左 Alt キーが押されている場合、Alt を一時解除して Shift + Space を送信
-            if ((current_layer == 0 || current_layer == 5) && record->event.pressed && (get_mods() & MOD_BIT(KC_LALT))) {
-                uint8_t mods_backup = get_mods();
-                unregister_mods(MOD_BIT(KC_LALT));
-                tap_code16(S(KC_SPC));
-                set_mods(mods_backup);
-                return false;
-            }
             // Layer 2 (Raise) or Layer 7: タップで Shift + Space を送信
             if ((current_layer == 2 || current_layer == 7) && record->tap.count > 0) {
                 if (record->event.pressed) {
@@ -333,8 +325,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 layer_state_t layer_state_set_user(layer_state_t state) {
     // L1 + L2 -> L3
     state = update_tri_layer_state(state, 1, 2, 3);
-    // L5 + L6 -> L7
-    state = update_tri_layer_state(state, 5, 6, 7);
+    // L6 + L7 -> L8
+    state = update_tri_layer_state(state, 6, 7, 8);
     return state;
 }
 
