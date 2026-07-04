@@ -30,6 +30,7 @@ enum custom_keycodes {
     CMB_U_COMM, // U + , (Enter)
     CMB_RY,     // R + Y (Tab)
     CMB_WR,     // W + R (Shift+Tab)
+    CMB_SAVE,   // O + - (Ctrl+S / Command+S)
 
     // Maccy 呼び出し
     // CMB_MACCY_L, // U + O (Maccy呼び出し)
@@ -59,6 +60,7 @@ const uint16_t PROGMEM combo_p_grv[]      = {KC_P, KC_GRV, COMBO_END};
 const uint16_t PROGMEM combo_u_comm[]     = {KC_U, KC_COMM, COMBO_END};
 const uint16_t PROGMEM combo_ry[]         = {KC_R, KC_Y, COMBO_END};
 const uint16_t PROGMEM combo_wr[]         = {KC_W, KC_R, COMBO_END};
+const uint16_t PROGMEM combo_save[]       = {KC_O, KC_MINS, COMBO_END};
 
 // const uint16_t PROGMEM combo_maccy_l[]    = {KC_U, KC_O, COMBO_END};
 const uint16_t PROGMEM combo_maccy_r[]    = {KC_R, KC_T, COMBO_END};
@@ -86,6 +88,7 @@ combo_t key_combos[] = {
     COMBO(combo_u_comm, CMB_U_COMM),
     COMBO(combo_ry, CMB_RY),
     COMBO(combo_wr, CMB_WR),
+    COMBO(combo_save, CMB_SAVE),
 
     // COMBO(combo_maccy_l, CMB_MACCY_L),
     COMBO(combo_maccy_r, CMB_MACCY_R),
@@ -241,6 +244,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case CMB_WR:
             if (record->event.pressed) {
                 tap_code16(S(KC_TAB));
+            }
+            return false;
+
+        case CMB_SAVE:
+            if (record->event.pressed) {
+                if (is_windows) {
+                    tap_code16(LCTL(KC_S));
+                } else {
+                    tap_code16(LGUI(KC_S));
+                }
             }
             return false;
 
