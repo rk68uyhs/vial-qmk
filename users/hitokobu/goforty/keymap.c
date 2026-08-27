@@ -20,10 +20,10 @@ enum custom_keycodes {
     CMB_QUIT,  // L + U + , (終了)
 
     // IME文字変換
-    CMB_TN,  // T + N (Mac Ctrl+J / Win F6)
-    CMB_NS,  // N + S (Mac Ctrl+K / Win F7)
-    CMB_TNS, // T + N + S (Mac Ctrl+L / Win F8)
-    CMB_TS,  // T + S (Mac Ctrl+; / Win F9)
+    CMB_TN,  // T + N (Mac Ctrl+J / Win F6: ひらがな)
+    CMB_NS,  // N + S (Mac Ctrl+K / Win F7: 全角カタカナ)
+    CMB_TNS, // T + N + S (Mac Ctrl+L / Win F9: 全角英数)
+    CMB_TS,  // T + S (Mac Ctrl+; / Win F10: 半角英数)
 
     // その他
     CMB_P_GRV,  // P + ` (Delete)
@@ -32,9 +32,9 @@ enum custom_keycodes {
     CMB_WR,     // W + R (Shift+Tab)
     CMB_SAVE,   // O + - (Ctrl+S / Command+S)
 
-    // Maccy 呼び出し
+    // クリップボード履歴呼び出し
     // CMB_MACCY_L, // U + O (Maccy呼び出し)
-    CMB_MACCY_R, // R + T (Maccy呼び出し)
+    CMB_MACCY_R, // R + T (Mac Hyper+V / Win Win+V: クリップボード履歴)
 
     // ハードリセット
     CMB_HARD_RESET, // 一番右上 + 一番右下 でリセット
@@ -206,7 +206,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case CMB_TNS:
             if (record->event.pressed) {
                 if (is_windows) {
-                    tap_code16(KC_F8);
+                    tap_code16(KC_F9);
                 } else {
                     tap_code16(LCTL(KC_L));
                 }
@@ -216,7 +216,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case CMB_TS:
             if (record->event.pressed) {
                 if (is_windows) {
-                    tap_code16(KC_F9);
+                    tap_code16(KC_F10);
                 } else {
                     tap_code16(LCTL(KC_SCLN));
                 }
@@ -265,7 +265,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         case CMB_MACCY_R:
             if (record->event.pressed) {
-                tap_code16(HYPR(KC_V));
+                if (is_windows) {
+                    tap_code16(LGUI(KC_V));
+                } else {
+                    tap_code16(HYPR(KC_V));
+                }
             }
             return false;
 
