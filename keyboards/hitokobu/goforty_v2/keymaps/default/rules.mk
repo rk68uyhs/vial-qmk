@@ -1,7 +1,1 @@
-COMBO_ENABLE = yes
-GRAVE_ESC_ENABLE = yes
-NKRO_ENABLE = yes
-EXTRAKEY_ENABLE = yes
-MOUSEKEY_ENABLE = yes
-VIA_ENABLE = no
-VIAL_ENABLE = no
+USER_NAME := hitokobu/goforty

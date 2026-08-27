@@ -1,6 +1,1 @@
-LTO_ENABLE = yes
-COMBO_ENABLE = yes
-EXTRAKEY_ENABLE = yes
-MOUSEKEY_ENABLE = yes
-VIA_ENABLE = no
-VIAL_ENABLE = no
+USER_NAME := hitokobu/goforty
