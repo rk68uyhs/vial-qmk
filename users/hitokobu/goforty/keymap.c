@@ -20,16 +20,16 @@ enum custom_keycodes {
     CMB_QUIT,  // L + U + , (終了)
 
     // IME文字変換
-    CMB_TN,  // T + N (Mac Ctrl+J / Win F6: ひらがな)
-    CMB_NS,  // N + S (Mac Ctrl+K / Win F7: 全角カタカナ)
-    CMB_TNS, // T + N + S (Mac Ctrl+L / Win F9: 全角英数)
-    CMB_TS,  // T + S (Mac Ctrl+; / Win F10: 半角英数)
+    CMB_KANA_H,   // T + N (Mac Ctrl+J / Win F6: ひらがな)
+    CMB_KANA_K,   // N + S (Mac Ctrl+K / Win F7: 全角カタカナ)
+    CMB_ALPHA_H,  // T + N + S (Mac Ctrl+L / Win F9: 全角英数)
+    CMB_ALPHA_F,  // T + S (Mac Ctrl+; / Win F10: 半角英数)
 
     // その他
-    CMB_P_GRV,  // P + ` (Delete)
-    CMB_U_COMM, // U + , (Enter)
-    CMB_RY,     // R + Y (Tab)
-    CMB_WR,     // W + R (Shift+Tab)
+    CMB_DEL,    // P + ` (Delete)
+    CMB_ENT,    // U + , (Enter)
+    CMB_TAB,    // R + Y (Tab)
+    CMB_S_TAB,  // W + R (Shift+Tab)
     CMB_SAVE,   // O + - (Ctrl+S / Command+S)
 
     // クリップボード履歴呼び出し
@@ -51,15 +51,15 @@ const uint16_t PROGMEM combo_all[]        = {KC_I, KC_A, KC_O, COMBO_END};
 const uint16_t PROGMEM combo_close[]      = {KC_L, KC_U, COMBO_END};
 const uint16_t PROGMEM combo_quit[]       = {KC_L, KC_U, KC_COMM, COMBO_END};
 
-const uint16_t PROGMEM combo_tn[]         = {KC_T, KC_N, COMBO_END};
-const uint16_t PROGMEM combo_ns[]         = {KC_N, KC_S, COMBO_END};
-const uint16_t PROGMEM combo_tns[]        = {KC_T, KC_N, KC_S, COMBO_END};
-const uint16_t PROGMEM combo_ts[]         = {KC_T, KC_S, COMBO_END};
+const uint16_t PROGMEM combo_kana_h[]     = {KC_T, KC_N, COMBO_END};
+const uint16_t PROGMEM combo_kana_k[]     = {KC_N, KC_S, COMBO_END};
+const uint16_t PROGMEM combo_alpha_h[]    = {KC_T, KC_N, KC_S, COMBO_END};
+const uint16_t PROGMEM combo_alpha_f[]    = {KC_T, KC_S, COMBO_END};
 
-const uint16_t PROGMEM combo_p_grv[]      = {KC_P, KC_GRV, COMBO_END};
-const uint16_t PROGMEM combo_u_comm[]     = {KC_U, KC_COMM, COMBO_END};
-const uint16_t PROGMEM combo_ry[]         = {KC_R, KC_Y, COMBO_END};
-const uint16_t PROGMEM combo_wr[]         = {KC_W, KC_R, COMBO_END};
+const uint16_t PROGMEM combo_del[]        = {KC_P, KC_GRV, COMBO_END};
+const uint16_t PROGMEM combo_ent[]        = {KC_U, KC_COMM, COMBO_END};
+const uint16_t PROGMEM combo_tab[]        = {KC_R, KC_Y, COMBO_END};
+const uint16_t PROGMEM combo_s_tab[]      = {KC_W, KC_R, COMBO_END};
 const uint16_t PROGMEM combo_save[]       = {KC_O, KC_MINS, COMBO_END};
 
 // const uint16_t PROGMEM combo_maccy_l[]    = {KC_U, KC_O, COMBO_END};
@@ -79,15 +79,15 @@ combo_t key_combos[] = {
     COMBO(combo_close, CMB_CLOSE),
     COMBO(combo_quit, CMB_QUIT),
 
-    COMBO(combo_tn, CMB_TN),
-    COMBO(combo_ns, CMB_NS),
-    COMBO(combo_tns, CMB_TNS),
-    COMBO(combo_ts, CMB_TS),
+    COMBO(combo_kana_h, CMB_KANA_H),
+    COMBO(combo_kana_k, CMB_KANA_K),
+    COMBO(combo_alpha_h, CMB_ALPHA_H),
+    COMBO(combo_alpha_f, CMB_ALPHA_F),
 
-    COMBO(combo_p_grv, CMB_P_GRV),
-    COMBO(combo_u_comm, CMB_U_COMM),
-    COMBO(combo_ry, CMB_RY),
-    COMBO(combo_wr, CMB_WR),
+    COMBO(combo_del, CMB_DEL),
+    COMBO(combo_ent, CMB_ENT),
+    COMBO(combo_tab, CMB_TAB),
+    COMBO(combo_s_tab, CMB_S_TAB),
     COMBO(combo_save, CMB_SAVE),
 
     // COMBO(combo_maccy_l, CMB_MACCY_L),
@@ -183,7 +183,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 
-        case CMB_TN:
+        case CMB_KANA_H:
             if (record->event.pressed) {
                 if (is_windows) {
                     tap_code16(KC_F6);
@@ -193,7 +193,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 
-        case CMB_NS:
+        case CMB_KANA_K:
             if (record->event.pressed) {
                 if (is_windows) {
                     tap_code16(KC_F7);
@@ -203,7 +203,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 
-        case CMB_TNS:
+        case CMB_ALPHA_H:
             if (record->event.pressed) {
                 if (is_windows) {
                     tap_code16(KC_F9);
@@ -213,7 +213,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 
-        case CMB_TS:
+        case CMB_ALPHA_F:
             if (record->event.pressed) {
                 if (is_windows) {
                     tap_code16(KC_F10);
@@ -223,25 +223,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 
-        case CMB_P_GRV:
+        case CMB_DEL:
             if (record->event.pressed) {
                 tap_code16(KC_DEL);
             }
             return false;
 
-        case CMB_U_COMM:
+        case CMB_ENT:
             if (record->event.pressed) {
                 tap_code16(KC_ENT);
             }
             return false;
 
-        case CMB_RY:
+        case CMB_TAB:
             if (record->event.pressed) {
                 tap_code16(KC_TAB);
             }
             return false;
 
-        case CMB_WR:
+        case CMB_S_TAB:
             if (record->event.pressed) {
                 tap_code16(S(KC_TAB));
             }
@@ -428,8 +428,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [9] = LAYOUT(
         LGUI(KC_L), KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_MNXT, KC_NO, TO(0), KC_NO, TO(5), KC_NO, KC_NO,
-        KC_NO,            KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_MPLY, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
-        KC_NO,            KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_MPRV, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
-        KC_NO,            KC_NO, KC_NO, KC_NO, KC_NO,    KC_NO,    KC_NO,    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
+        KC_NO,      KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_MPLY, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+        KC_NO,      KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_MPRV, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+        KC_NO,      KC_NO, KC_NO, KC_NO, KC_NO,    KC_NO,    KC_NO,    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
     )
 };
